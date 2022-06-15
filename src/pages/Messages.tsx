@@ -5,24 +5,6 @@ const Messages = () => {
   return (
     <Stack gap="5px">
       <div style={{ padding: '40px', border: '1px solid #fff' }}>Messages</div>
-      <div style={{ padding: '40px', border: '1px solid #fff' }}>Messages</div>
-      <div style={{ padding: '40px', border: '1px solid #fff' }}>Messages</div>
-      <div style={{ padding: '40px', border: '1px solid #fff' }}>Messages</div>
-      <div style={{ padding: '40px', border: '1px solid #fff' }}>Messages</div>
-      <div style={{ padding: '40px', border: '1px solid #fff' }}>Messages</div>
-      <div style={{ padding: '40px', border: '1px solid #fff' }}>Messages</div>
-      <div style={{ padding: '40px', border: '1px solid #fff' }}>Messages</div>
-      <div style={{ padding: '40px', border: '1px solid #fff' }}>Messages</div>
-      <div style={{ padding: '40px', border: '1px solid #fff' }}>Messages</div>
-      <div style={{ padding: '40px', border: '1px solid #fff' }}>Messages</div>
-      <div style={{ padding: '40px', border: '1px solid #fff' }}>Messages</div>
-      <div style={{ padding: '40px', border: '1px solid #fff' }}>Messages</div>
-      <div style={{ padding: '40px', border: '1px solid #fff' }}>Messages</div>
-      <div style={{ padding: '40px', border: '1px solid #fff' }}>Messages</div>
-      <div style={{ padding: '40px', border: '1px solid #fff' }}>Messages</div>
-      <div style={{ padding: '40px', border: '1px solid #fff' }}>Messages</div>
-      <div style={{ padding: '40px', border: '1px solid #fff' }}>Messages</div>
-      <div style={{ padding: '40px', border: '1px solid #fff' }}>Messages</div>
     </Stack>
   );
 };

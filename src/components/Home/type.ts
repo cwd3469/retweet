@@ -12,7 +12,7 @@ export interface Tweet extends User {
     image: string;
   };
   timestamp?: Date;
-}
+} 
 
 export interface TweetList extends Tweet {
   id?: string;

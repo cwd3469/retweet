@@ -4,9 +4,12 @@ import Home from '../components/Home';
 import NavigationSub from '../components/Common/NavigationSub';
 import PageHead from '../components/Common/PageHead';
 import MainBody from '../components/Common/MainBody';
-import { useAppDispatch } from '../store/hooks';
-import { tweetGetData } from '../store/tweet';
+import { useAppDispatch, useAppSelector } from '../store/hooks';
+import { tweetDetailGetData } from '../store/tweet';
+import { useParams } from 'react-router-dom';
 import HomeItem from '../components/Home/HomeItem';
+import { TweetList } from '../components/Home/type';
+import { DocumentData } from 'firebase/firestore';
 
 const TweetPage = () => {
   const dispatch = useAppDispatch();
@@ -14,14 +17,35 @@ const TweetPage = () => {
     name: 'Tweet',
     width: '545px',
   };
+  const tweetid = useParams<{ tweetid: string }>().tweetid;
   useEffect(() => {
-    dispatch(tweetGetData());
+    dispatch(tweetDetailGetData(tweetid));
   }, []);
+
+  const items: Array<DocumentData> | [] = useAppSelector((state) => state.tweet.tweet);
+  const item = items[0];
+  console.log(item);
+
   return (
     <>
       <MainBody bodyWidth={info.width}>
         <>
           <PageHead pageName={info.name} />
+          <Box sx={{ borderRight: '1px solid #eee' }}>
+            {item !== undefined ? (
+              <HomeItem
+                id={item.id}
+                userId={item.userId}
+                profileImg={item.profileImg}
+                nickName={item.nickName}
+                userEmail={item.userEmail}
+                createDate={item.createDate}
+                contents={item.contents}
+              />
+            ) : (
+              <></>
+            )}
+          </Box>
         </>
       </MainBody>
       <Grid item sx={{ width: `calc(100% - ${info.width})` }}>

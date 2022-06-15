@@ -1,5 +1,11 @@
 module.exports = {
+  env: {
+    browser: true,
+    es6: true,
+    node: true,
+  },
   parser: '@typescript-eslint/parser',
+  plugins: ['@typescript-eslint', 'prettier'],
   parserOptions: {
     ecmaVersion: '2021',
     sourceType: 'module',
@@ -24,8 +30,23 @@ module.exports = {
     'plugin:prettier/recommended',
   ],
   rules: {
+    'no-extra-semi': 'error',
     'no-unused-vars': 'off',
+    'no-console': ['off'],
+    'import/prefer-default-export': 'off',
+    'react-hooks/exhaustive-deps': ['warn'],
+    'react/jsx-filename-extension': [2, { extensions: ['.js', '.jsx', '.ts', '.tsx'] }],
+    'react/jsx-props-no-spreading': [1, { custom: 'ignore' }],
+    'arrow-parens': ['warn', 'as-needed'],
     'react/prop-types': 'off',
+    'linebreak-style': 0,
+    'prettier/prettier': 0,
+    'import/extensions': 0,
+    'no-use-before-define': 0,
+    'import/no-unresolved': 0,
+    'import/no-extraneous-dependencies': 0, // 테스트 또는 개발환경을 구성하는 파일에서는 devDependency 사용을 허용
+    'no-shadow': 0,
+    'jsx-a11y/no-noninteractive-element-interactions': 0,
     'react/jsx-uses-react': 'off',
     'react/react-in-jsx-scope': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',

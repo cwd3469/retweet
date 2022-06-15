@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Grid,
   Stack,
@@ -18,34 +18,42 @@ import GetAppIcon from '@mui/icons-material/GetApp';
 import { TweetList } from './type';
 import { useAppDispatch } from '../../store/hooks';
 import { tweetDeleteData } from '../../store/tweet';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation, useParams } from 'react-router-dom';
 
 interface ItemTxt extends TypographyProps {
   isname?: number;
+  path: number;
 }
 
-const Item = styled(Box)<BoxProps>(({}) => ({
+interface BoxItem extends BoxProps {
+  path?: number;
+}
+
+const Item = styled(Box)<BoxItem>(({ path }) => ({
   backgroundColor: '#fff',
   width: '100%',
   height: '100%',
-  padding: '8px 16px',
+  padding: '12px 16px',
   borderBottom: '1px solid #eee',
   transition: 'esea-out 0.2s',
-  cursor: 'pointer',
+  cursor: path ? 'auto' : 'pointer',
   '&:hover': {
-    backgroundColor: '#eee',
+    backgroundColor: path ? '#fff' : '#eee',
   },
 }));
 
-const ItemTxt = styled(Typography)<ItemTxt>(({ isname }) => ({
+const ItemTxt = styled(Typography)<ItemTxt>(({ isname, path }) => ({
   fontWeight: isname ? 'bold' : '500',
-  color: isname ? '#000' : '#777',
+  color: path ? (isname ? '#000' : '#444') : isname ? '#000' : '#777',
   fontSize: isname ? '15px' : '14px',
+  lineHeight: '1',
 }));
 ItemTxt.defaultProps = {
   isname: 0,
 };
-const TxtLine = styled('div')(({}) => ({
+
+const TxtLine = styled('div')(({ theme }) => ({
+  ...theme.typography.body1,
   minHeight: '18px',
   lineHeight: '1.5',
 }));
@@ -61,11 +69,11 @@ const ImgLine = styled('div')(({}) => ({
   },
 }));
 
-const EditBtx = styled(Grid)(({}) => ({
+const EditBtx = styled(Box)<BoxItem>(({ path }) => ({
   cursor: 'pointer',
   display: 'flex',
   flexDirection: 'row',
-  justifyContent: 'flex-start',
+  justifyContent: path ? 'center' : 'flex-start',
   alignItems: 'center',
   width: '24%',
   '& .MuiBox-root': {
@@ -79,7 +87,7 @@ const EditBtx = styled(Grid)(({}) => ({
       left: '50%',
       top: '50%',
       transform: 'translate(-50%, -50%)',
-      fontSize: '14px',
+      fontSize: path ? '18px' : '14px',
     },
   },
   '.MuiTypography-body1': {
@@ -126,6 +134,36 @@ const EditBtx = styled(Grid)(({}) => ({
 
 const HomeItem = (props: TweetList) => {
   const { id, userId, nickName, userEmail, createDate, contents, profileImg } = props;
+  const [path, setPath] = React.useState<number>(0);
+  const imgWidth = path ? 70 : 65;
+  const textArr = contents.text;
+  const location = useLocation().pathname;
+  const bottom = [
+    {
+      icon: <ChatBubbleOutlineIcon />,
+      number: 180,
+      class: 'home-comment',
+      name: 'Retweets',
+    },
+    {
+      icon: <AutorenewIcon />,
+      number: 180,
+      class: 'home-retweet',
+      name: 'Quote Tweets',
+    },
+    {
+      icon: <FavoriteBorderIcon />,
+      number: 180,
+      class: 'home-like',
+      name: 'Likes',
+    },
+    {
+      icon: <GetAppIcon />,
+      number: 180,
+      class: 'home-down',
+    },
+  ];
+  const link = location.split('/');
   const history = useHistory();
   const dispatch = useAppDispatch();
   const tweetDelete = () => {
@@ -136,48 +174,46 @@ const HomeItem = (props: TweetList) => {
   const tweetRouter = () => {
     history.push(`/tweet/${id}`);
   };
-  const textArr = contents.text;
-  const imgWidth = 70;
-  const bottom = [
-    {
-      icon: <ChatBubbleOutlineIcon />,
-      number: 180,
-      class: 'home-comment',
-    },
-    {
-      icon: <AutorenewIcon />,
-      number: 180,
-      class: 'home-retweet',
-    },
-    {
-      icon: <FavoriteBorderIcon />,
-      number: 180,
-      class: 'home-like',
-    },
-    {
-      icon: <GetAppIcon />,
-      number: 180,
-      class: 'home-down',
-    },
-  ];
+
+  useEffect(() => {
+    if (link[1] === 'tweet') {
+      setPath(1);
+    }
+  }, [link]);
+
   return (
-    <Item onClick={tweetRouter}>
+    <Item onClick={!path ? tweetRouter : () => {}} path={path}>
       <Grid container direction="row" justifyContent="flex-start" alignItems="flex-start">
-        <ItemProfileImg imgWidth={imgWidth} profileImg={profileImg} />
-        <Stack sx={{ width: `calc(100% - ${imgWidth}px)` }}>
-          <Grid container gap="10px">
-            <ItemTxt isname={1}>{nickName}</ItemTxt>
-            <ItemTxt>{userEmail}</ItemTxt>
-            <ItemTxt>{createDate}</ItemTxt>
+        {path ? '' : <ItemProfileImg imgWidth={imgWidth} profileImg={profileImg} />}
+        <Stack sx={{ width: path ? '100%' : `calc(100% - ${imgWidth}px)` }}>
+          <Grid container gap="10px" alignItems="center" paddingBottom={path ? '16px' : '0px'}>
+            {!path ? '' : <ItemProfileImg imgWidth={imgWidth} profileImg={profileImg} />}
+            <Grid
+              container
+              direction={path ? 'column' : 'row'}
+              justifyContent={path ? 'center' : 'flex-start'}
+              alignItems={path ? 'self-start' : 'center'}
+              width={'auto'}
+              gap={path ? '5px' : '10px'}
+            >
+              <ItemTxt isname={1} path={path}>
+                {nickName}
+              </ItemTxt>
+              <ItemTxt path={path}>{userEmail}</ItemTxt>
+            </Grid>
+            {path ? '' : <ItemTxt path={path}>{createDate}</ItemTxt>}
             <IconButton sx={{ padding: 0, marginLeft: 'auto' }} onClick={tweetDelete}>
               <MoreHorizIcon />
             </IconButton>
           </Grid>
           <Stack paddingBottom={'16px'}>
             {textArr.map((obj, idx) => {
-              return <TxtLine key={idx}>{obj}</TxtLine>;
+              return (
+                <TxtLine key={idx} sx={{ fontSize: path ? '21px' : '16px' }}>
+                  {obj}
+                </TxtLine>
+              );
             })}
-
             <ImgLine>
               <img
                 className="contents-img"
@@ -186,12 +222,55 @@ const HomeItem = (props: TweetList) => {
               />
             </ImgLine>
           </Stack>
-          <Grid container direction="row" justifyContent="space-between" alignItems="center">
+          {!path ? (
+            ''
+          ) : (
+            <Grid container paddingBottom={'16px'}>
+              <ItemTxt path={path} sx={{ fontSize: '18px' }}>
+                {createDate}
+              </ItemTxt>
+            </Grid>
+          )}
+
+          {path ? (
+            <Grid
+              container
+              direction="row"
+              justifyContent="flex-start"
+              alignItems="center"
+              gap="15px"
+              padding={'16px 0'}
+              sx={{ borderTop: '1px solid #eee', borderBottom: '1px solid #eee' }}
+            >
+              {bottom.map((boo, idx) => {
+                return idx !== 3 ? (
+                  <Grid container gap="5px" key={idx} width="auto" alignItems={'center'}>
+                    <ItemTxt sx={{ color: 'black' }} path={path}>
+                      {boo.number}
+                    </ItemTxt>
+                    <ItemTxt path={path}>{boo.name}</ItemTxt>
+                  </Grid>
+                ) : (
+                  ''
+                );
+              })}
+            </Grid>
+          ) : (
+            ''
+          )}
+
+          <Grid
+            container
+            direction="row"
+            justifyContent="space-between"
+            alignItems="center"
+            paddingTop={'16px'}
+          >
             {bottom.map((boo, idx) => {
               return (
-                <EditBtx key={idx} className={boo.class}>
+                <EditBtx key={idx} className={boo.class} path={path}>
                   <Box>{boo.icon}</Box>
-                  <ItemTxt>{boo.number}</ItemTxt>
+                  {path ? '' : <ItemTxt path={path}>{boo.number}</ItemTxt>}
                 </EditBtx>
               );
             })}

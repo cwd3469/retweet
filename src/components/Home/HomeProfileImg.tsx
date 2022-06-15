@@ -20,13 +20,13 @@ const HomeProfileImg = (props: Props) => {
       }}
     >
       <IconButton
-        sx={{ width: round, height: round, padding: '2px' }}
+        sx={{ width: round, height: round }}
         color="primary"
         onClick={() => {
           history.push('/profile');
         }}
       >
-        <Avatar src={profileImg} alt="트위터 로고" />
+        <Avatar src={profileImg} sx={{ width: round, height: round }} alt="트위터 로고" />
       </IconButton>
     </Box>
   );
