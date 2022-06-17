@@ -5,12 +5,12 @@ import { useHistory } from 'react-router-dom';
 interface Props {
   imgWidth: number;
   profileImg: string;
+  userId?: string;
 }
 
 const HomeProfileImg = (props: Props) => {
-  const { imgWidth, profileImg } = props;
+  const { imgWidth, profileImg, userId } = props;
   const history = useHistory();
-
   const round = `${imgWidth - 15}px`;
 
   return (
@@ -22,8 +22,9 @@ const HomeProfileImg = (props: Props) => {
       <IconButton
         sx={{ width: round, height: round }}
         color="primary"
-        onClick={() => {
-          history.push('/profile');
+        onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
+          event.stopPropagation();
+          history.push(`/profile/${userId}`);
         }}
       >
         <Avatar src={profileImg} sx={{ width: round, height: round }} alt="트위터 로고" />

@@ -3,11 +3,11 @@ import React, { useState } from 'react';
 import HomeWrite from './HomeWrite';
 import HomeItem from './HomeItem';
 import '../../assets/home.scss';
-import { TweetList } from './type';
+import { Tweet } from './type';
 import { useAppSelector } from '../../store/hooks';
 
 const Home = () => {
-  const items: Array<TweetList> | [] = useAppSelector((state) => state.tweet.tweet);
+  const items: Array<Tweet> | [] = useAppSelector((state) => state.tweet.tweet);
   return (
     <Stack sx={{ borderRight: '1px solid #eee' }}>
       <HomeWrite />
