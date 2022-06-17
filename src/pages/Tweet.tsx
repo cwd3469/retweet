@@ -8,7 +8,7 @@ import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { tweetDetailGetData } from '../store/tweet';
 import { useParams } from 'react-router-dom';
 import HomeItem from '../components/Home/HomeItem';
-import { TweetList } from '../components/Home/type';
+import { Tweet } from '../components/Home/type';
 import { DocumentData } from 'firebase/firestore';
 
 const TweetPage = () => {

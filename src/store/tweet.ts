@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { TweetList, Tweet } from '../components/Home/type';
+import { Tweet } from '../components/Home/type';
 import type { AppThunk } from './index';
 import { db } from '../utils/firebase';
 import {
@@ -16,7 +16,7 @@ import {
 } from 'firebase/firestore';
 
 interface TweetState {
-  tweet: TweetList[] | DocumentData[] | [];
+  tweet: Tweet[] | DocumentData[] | [];
 }
 
 // Define the initial state using that type
@@ -56,7 +56,7 @@ export const tweetDetailGetData = (id:string): AppThunk => async dispatch  => {
 
 // 트위 수정
 export const tweetPutData =
-  (tweet: TweetList): AppThunk =>
+  (tweet: Tweet): AppThunk =>
   async dispatch => {
     const id = tweet.id;
     const docRef = doc(board, id);
@@ -91,7 +91,7 @@ export const tweetSlice = createSlice({
 
       state.tweet = newLists;
     },
-    tweetPutSlice: (state, action: PayloadAction<TweetList>) => {
+    tweetPutSlice: (state, action: PayloadAction<Tweet>) => {
       const tweet = action.payload;
       const newLists = state.tweet.map(item => {
         return item.id !== tweet.id ? item : tweet;
@@ -104,7 +104,7 @@ export const tweetSlice = createSlice({
     tweetDetailGetSlice: (state, action: PayloadAction<DocumentData>) => {
       state.tweet = [action.payload];
     },
-    tweetPostingSlice: (state, action: PayloadAction<TweetList>) => {
+    tweetPostingSlice: (state, action: PayloadAction<Tweet>) => {
       const newArr = [action.payload, ...state.tweet];
       console.log(newArr);
       state.tweet = newArr;
