@@ -66,7 +66,7 @@ const HomeItem = (props: Tweet) => {
               <MoreHorizIcon />
             </IconButton>
           </Grid>
-          <Stack paddingBottom={'16px'}>
+          <Stack paddingBottom={path ? '16px' : '0px'}>
             {textArr.map((obj, idx) => {
               return (
                 <TxtLine key={idx} sx={{ fontSize: path ? '21px' : '16px' }}>
@@ -74,9 +74,13 @@ const HomeItem = (props: Tweet) => {
                 </TxtLine>
               );
             })}
-            <ImgLine>
-              <img className="contents-img" src={imageArr} alt="" />
-            </ImgLine>
+            {imageArr !== '' ? (
+              <ImgLine>
+                <img className="contents-img" src={imageArr} alt="" />
+              </ImgLine>
+            ) : (
+              ''
+            )}
           </Stack>
           {!path ? (
             ''

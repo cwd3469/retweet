@@ -17,19 +17,28 @@ const HomeWrite = () => {
   const imgWidth = 70;
   const [view, setView] = useState<boolean>(false);
   const [text, setText] = useState<string>('');
+  const [disabled, setDisabled] = useState<boolean>(true);
   const [url, setUrl] = useState<string>('');
   const handlingUrl = (imageUrl: string) => {
+    setDisabled(true);
     setUrl(imageUrl);
   };
 
-  const tweetChange = (event: ChangeEvent<HTMLTextAreaElement> | undefined): void => {
-    if (!event) return;
+  const tweetChange = (event: ChangeEvent<HTMLTextAreaElement>): void => {
     const value = (event.target as unknown as HTMLInputElement).value;
-    setText(value);
+    console.log(value);
+
+    if (value.length === 0) {
+      setDisabled(true);
+      setText('');
+    } else {
+      setDisabled(false);
+      setText(value);
+    }
   };
+
   const tweetSummit = () => {
     const date = new Date();
-
     const textArr = text.split('\n');
     const tweetInfo: Tweet = {
       userId: authInfo.userId,
@@ -44,7 +53,11 @@ const HomeWrite = () => {
       timestamp: date,
     };
     dispatch(tweetPosting(tweetInfo));
+    setText('');
+    setUrl('');
+    setDisabled(true);
   };
+
   return (
     <Box sx={{ backgroundColor: '#fff', width: '100%', borderBottom: '1px solid #eee' }}>
       <Grid container direction="row" justifyContent="flex-start" alignItems="flex-start">
@@ -66,6 +79,7 @@ const HomeWrite = () => {
               aria-label="empty textarea"
               placeholder="What's heppening?"
               className="home_write"
+              value={text}
               onChange={tweetChange}
             />
             {url ? (
@@ -85,7 +99,11 @@ const HomeWrite = () => {
             <></>
           )}
 
-          <HomeEditOptions tweetSummit={tweetSummit} handlingUrl={handlingUrl} />
+          <HomeEditOptions
+            tweetSummit={tweetSummit}
+            handlingUrl={handlingUrl}
+            disabled={disabled}
+          />
         </Grid>
       </Grid>
     </Box>

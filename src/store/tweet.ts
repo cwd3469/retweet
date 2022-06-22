@@ -106,7 +106,6 @@ export const tweetSlice = createSlice({
     },
     tweetPostingSlice: (state, action: PayloadAction<Tweet>) => {
       const newArr = [action.payload, ...state.tweet];
-      console.log(newArr);
       state.tweet = newArr;
     },
   },

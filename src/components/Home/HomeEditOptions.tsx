@@ -6,7 +6,7 @@ import AssessmentOutlinedIcon from '@mui/icons-material/AssessmentOutlined';
 import SentimentVerySatisfiedOutlinedIcon from '@mui/icons-material/SentimentVerySatisfiedOutlined';
 import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined';
 import FmdGoodOutlinedIcon from '@mui/icons-material/FmdGoodOutlined';
-import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { getStorage, ref, uploadBytes, getDownloadURL, StorageReference } from 'firebase/storage';
 import React from 'react';
 
 const Input = styled('input')({
@@ -19,35 +19,34 @@ const EditButton = styled(IconButton)(({}) => ({
 interface Props {
   handlingUrl: (imageUrl: string) => void;
   tweetSummit: () => void;
+  disabled: boolean;
 }
 
 const HomeEditOptions = (props: Props) => {
-  const { tweetSummit, handlingUrl } = props;
-  const [image, setImage] = React.useState<string>('');
+  const { tweetSummit, handlingUrl, disabled } = props;
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     const file = event?.target?.files !== null ? event.target.files[0] : null;
     const storage = getStorage();
     const storageRef = ref(storage, file?.name);
     if (!file) return;
     uploadBytes(storageRef, file);
-    getDownloadURL(storageRef)
-      .then((url) => {
+    console.log(storageRef);
+
+    getUrl(storageRef);
+  }
+
+  const getUrl = (ref: StorageReference) => {
+    getDownloadURL(ref)
+      .then((url: string) => {
         handlingUrl(url);
       })
       .catch((error) => {
-        switch (error.code) {
-          case 'storage/object-not-found':
-            break;
-          case 'storage/unauthorized':
-            break;
-          case 'storage/canceled':
-            break;
-          case 'storage/unknown':
-            break;
+        console.log(error);
+        if (error.code === 'storage/object-not-found') {
+          getUrl(ref);
         }
       });
-  }
-
+  };
   // const saveRoute = storageRef.child(`image/${}`);
   // const upload = saveRoute,put(file)
   return (
@@ -84,6 +83,7 @@ const HomeEditOptions = (props: Props) => {
 
       <Grid item>
         <Button
+          disabled={disabled}
           color="primary"
           variant="contained"
           sx={{ borderRadius: '30px', backgroundColor: 'rgb(29, 155, 240)' }}
