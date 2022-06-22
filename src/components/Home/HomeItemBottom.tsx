@@ -40,28 +40,33 @@ const HomeItemBottom = (props: Props) => {
 
   return (
     <>
-      <Grid
-        container
-        direction="row"
-        justifyContent="flex-start"
-        alignItems="center"
-        gap="15px"
-        padding={'16px 0'}
-        sx={{ borderTop: '1px solid #eee', borderBottom: '1px solid #eee' }}
-      >
-        {bottom.map((boo, idx) => {
-          return idx !== 3 ? (
-            <Grid container gap="5px" key={idx} width="auto" alignItems={'center'}>
-              <ItemTxt sx={{ color: 'black' }} path={path}>
-                {boo.number}
-              </ItemTxt>
-              <ItemTxt path={path}>{boo.name}</ItemTxt>
-            </Grid>
-          ) : (
-            ''
-          );
-        })}
-      </Grid>
+      {path ? (
+        <Grid
+          container
+          direction="row"
+          justifyContent="flex-start"
+          alignItems="center"
+          gap="15px"
+          padding={'16px 0'}
+          sx={{ borderTop: '1px solid #eee', borderBottom: '1px solid #eee' }}
+        >
+          {bottom.map((boo, idx) => {
+            return idx !== 3 ? (
+              <Grid container gap="5px" key={idx} width="auto" alignItems={'center'}>
+                <ItemTxt sx={{ color: 'black' }} path={path}>
+                  {boo.number}
+                </ItemTxt>
+                <ItemTxt path={path}>{boo.name}</ItemTxt>
+              </Grid>
+            ) : (
+              ''
+            );
+          })}
+        </Grid>
+      ) : (
+        ''
+      )}
+
       <Grid
         container
         direction="row"

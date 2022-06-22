@@ -44,7 +44,6 @@ export const ImgLine = styled('div')(({}) => ({
   position: 'relative',
   marginTop: '16px',
   borderRadius: '15px',
-
   border: '1px solid #eee',
   '& .contents-img': {
     width: '100%',
