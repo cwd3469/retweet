@@ -3,7 +3,7 @@ import { Box, Grid } from '@mui/material';
 
 interface Props {
   children: JSX.Element;
-  bodyWidth: stirng;
+  bodyWidth: string;
 }
 
 const MainBody = (props: Props) => {

@@ -18,15 +18,8 @@ const HomePage = () => {
   }, []);
   return (
     <>
-      <MainBody bodyWidth={info.width}>
-        <>
-          <PageHead pageName={info.name} />
-          <Home />
-        </>
-      </MainBody>
-      <Grid item sx={{ width: `calc(100% - ${info.width})` }}>
-        <NavigationSub />
-      </Grid>
+      <PageHead pageName={info.name} />
+      <Home />
     </>
   );
 };

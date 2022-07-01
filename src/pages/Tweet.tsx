@@ -28,29 +28,22 @@ const TweetPage = () => {
 
   return (
     <>
-      <MainBody bodyWidth={info.width}>
-        <>
-          <PageHead pageName={info.name} />
-          <Box sx={{ borderRight: '1px solid #eee' }}>
-            {item !== undefined ? (
-              <HomeItem
-                id={item.id}
-                userId={item.userId}
-                profileImg={item.profileImg}
-                nickName={item.nickName}
-                userEmail={item.userEmail}
-                createDate={item.createDate}
-                contents={item.contents}
-              />
-            ) : (
-              <></>
-            )}
-          </Box>
-        </>
-      </MainBody>
-      <Grid item sx={{ width: `calc(100% - ${info.width})` }}>
-        <NavigationSub />
-      </Grid>
+      <PageHead pageName={info.name} />
+      <Box sx={{ borderRight: '1px solid #eee' }}>
+        {item !== undefined ? (
+          <HomeItem
+            id={item.id}
+            userId={item.userId}
+            profileImg={item.profileImg}
+            nickName={item.nickName}
+            userEmail={item.userEmail}
+            createDate={item.createDate}
+            contents={item.contents}
+          />
+        ) : (
+          <></>
+        )}
+      </Box>
     </>
   );
 };
